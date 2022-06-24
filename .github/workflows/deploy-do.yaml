@@ -1,0 +1,27 @@
+name: Test en DigitalOcean
+on: [push]
+jobs:
+  deploy_infrastructure_digitalocean:
+    name: Deploy infrastructure in Digitalocean
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: Craete VPC
+        run: doctl vpcs create --name myblog-deploy-vpc --region nyc1 --ip-range 192.168.10.0/24
+      
+      - name: Get VPC info
+        run: doctl vpcs list --format ID,Name | grep myblog-deploy-vpc > temp.txt
+
+      - name: Get VPC ID
+        run: awk '{print $1; exit}' temp.txt > tempid.txt
+
+      - name: Create a single droplet and assign it to VPC
+        run: doctl compute droplet create myblog1 --image centos-7-x64 --size s-2vcpu-4gb --region nyc1 --user-data-file script.sh --vpc-uuid "$(cat tempid.txt)" --wait
+#        run: doctl compute droplet create droplet1tests --image centos-7-x64 --size s-1vcpu-1gb --region nyc1 --user-data-file script.sh --vpc-uuid "$(cat tempid.txt)" --wait
