@@ -1,0 +1,6 @@
+---
+# defaults file for wordpress
+wp_site_title: Proyecto final Devops 2022
+wp_site_user: superadmin
+wp_site_password: Guate2022*
+wp_site_email: 06343006@galileo.edu
