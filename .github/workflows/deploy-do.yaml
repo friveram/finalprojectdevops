@@ -14,7 +14,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       
       - name: Craete VPC
-        run: doctl vpcs create --name myblog-deploy-vpc --region nyc1 --ip-range 192.168.10.0/24
+        run: doctl vpcs create --name myblog-deploy-vpc --region nyc1 --ip-range 192.168.15.0/24
       
       - name: Get VPC info
         run: doctl vpcs list --format ID,Name | grep myblog-deploy-vpc > temp.txt
