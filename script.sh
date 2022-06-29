@@ -18,3 +18,5 @@ systemctl restart httpd
 systemctl restart datadog-agent
 
 chmod 655 -R /var/log/httpd
+
+#echo linea dummy
